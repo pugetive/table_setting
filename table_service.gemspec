@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = TableService::VERSION
   spec.authors       = ["Todd Gehman"]
   spec.email         = ["toddgehman@gmail.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = %q{Facilitates a data table structure that can be trivially exported as HTML, XLS, CSV, etc while allowing human-friendly custom styles to be shared between the HTML and Excel formats.}
+  spec.summary       = %q{Data table exports with shared custom formatting.}
   spec.homepage      = ""
   spec.license       = "MIT"
 
