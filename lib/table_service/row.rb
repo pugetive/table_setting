@@ -1,14 +1,14 @@
 class TableService::Row
+  attr_reader :sheet, :bold, :background, :color, :size
+  attr_accessor :cells
   def initialize(sheet, options = {})
     @sheet = sheet
     @cells = []
     @sheet.rows.push(self)
-    # @bold = options[:bold] || false
-    # @shade = options[:shade] || nil
-  end
-
-  def sheet
-    @sheet
+    @bold       = options[:bold]       || nil
+    @background = options[:background] || nil
+    @color      = options[:color]      || nil
+    @size       = options[:size]       || nil
   end
 
   def num_columns
@@ -24,19 +24,23 @@ class TableService::Row
     end
     total_width
   end
-  
-  def cells
-    @cells
+
+  def bold?
+    bold
   end
 
   def new_cell(contents, options = {})
     TableService::Cell.new(self, contents, options)
   end
 
+  def add_cells(list)
+    list.map{|contents| self.new_cell(contents)}
+  end
+  
   def to_a
     cells.map(&:contents)
   end
-  
+
   def to_html
     if num_columns < sheet.num_columns and
       !filled?
@@ -56,7 +60,7 @@ class TableService::Row
     end
     false
   end
-  
+
   def to_xls
     <<-XML
       <Row>

@@ -1,33 +1,38 @@
 class TableService::Cell
-  
+  attr_reader :row, :contents, :span, :style
+    
   def initialize(row, contents, options = {})
     @row = row
     @row.cells.push(self)
 
     @contents = contents
-    @bold  = options[:bold]  || false
-    @shade = options[:shade] || nil
-    @span  = options[:span]  || nil
-  end
+    @bold       = options[:bold]       || nil
+    @background = options[:background] || nil
+    @color      = options[:color]      || nil
+    @size       = options[:size]       || nil
+    @span       = options[:span]       || nil
 
-  def row
-    @row
+    @style = TableService::Style.new(self)
   end
 
   def sheet
     row.sheet
   end
 
-  def contents
-    @contents
-  end
-
   def bold?
-    @bold
+    @bold || row.bold
   end
 
-  def span
-    @span
+  def background
+    @background || row.background
+  end
+
+  def color
+    @color || row.color
+  end
+
+  def size
+    @size || row.size
   end
 
   def to_html
@@ -36,41 +41,59 @@ class TableService::Cell
     HTML
   end
 
-  def html_classes
-    list = []
-    if bold?
-      list << 'bold'
-    end
-    unless list.empty?
-      return %Q{class="#{list.join(' ')}"}
-    end
-    ''
+  def style_name
+    style.name
   end
-  
-  def span_attribute
-    span = 0
-    if @span == 'all'
-      span = sheet.num_columns
-    elsif @span
-      span = @span
-    end
-    if span > 0
-      return %Q{colspan="#{span}"}
-    end
-    ''
+
+  def style_css
+    style.to_css
   end
-  
+
+  def style_xls
+    style.to_xls_xml
+  end
+
   def to_xls
-    if shade
-      %Q{<Cell ss:StyleID="c-#{shade.gsub('#', '')}"><Data ss:Type="String">#{contents}</Data></Cell>\n}
-    elsif bold?
-      %Q{<Cell ss:StyleID="bold"><Data ss:Type="String">#{contents}</Data></Cell>\n}
-    else
-      %Q{<Cell><Data ss:Type="String">#{contents}</Data></Cell>\n}
+    colspan = 1
+    if span == 'all'
+      colspan = sheet.num_columns
+    elsif span
+      colspan = span
     end
+
+    if colspan > 1
+      column_attribute = %Q{ss:MergeAcross="#{colspan - 1}"}
+    end
+
+    %Q{<Cell #{column_attribute} ss:StyleID="#{style.name}"><Data ss:Type="String">#{contents}</Data></Cell>\n}
   end
-  
-  def shade
-    @shade
-  end
+
+
+  private
+
+    def html_classes
+      list = []
+      if bold?
+        list << 'bold'
+      end
+      list.push(style.name)
+      unless list.empty?
+        return %Q{class="#{list.join(' ')}"}
+      end
+      ''
+    end
+
+    def span_attribute
+      span = 0
+      if @span == 'all'
+        span = sheet.num_columns
+      elsif @span
+        span = @span
+      end
+      if span > 0
+        return %Q{colspan="#{span}"}
+      end
+      ''
+    end
+
 end

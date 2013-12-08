@@ -12,7 +12,7 @@ class TableService::Stack
     end
     list
   end
-  
+
 
   def new_sheet(options = {})
     TableService::Sheet.new(self, options)
@@ -37,26 +37,20 @@ class TableService::Stack
 
 
   def xls_styles
-    defined_colors = {}
-    rv = ""
-  
+    signatures = {}
     cells.each do |cell|
-      if cell.shade and defined_colors[cell.shade].blank?
-        rv += <<-XML
-          <Style ss:ID="c-#{cell.shade.gsub('#', '')}">
-            <Interior ss:Color="#{cell.shade}" ss:Pattern="Solid"/>
-            <ss:Font ss:Bold="1"/>
-          </Style>
-          <Style ss:ID="bold">
-            <ss:Font ss:Bold="1"/>
-          </Style>
-        XML
-        defined_colors[cell.shade] ||= 0
-        defined_colors[cell.shade] += 1
-      end
+      next if signatures[cell.style_name]
+      signatures[cell.style_name] = cell.style_xls
     end
-    rv
+
+    xml = ''
+    signatures.each do |signature_class, signature_xls_style|
+      xml += <<-XML
+        <Style ss:ID="#{signature_class}">
+          #{signature_xls_style}
+        </Style>
+      XML
+    end
+    xml
   end
-
-
 end
