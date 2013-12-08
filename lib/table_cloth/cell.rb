@@ -1,4 +1,4 @@
-class TableService::Cell
+class TableCloth::Cell
   attr_reader :row, :contents, :span, :style, :left_index
     
   def initialize(row, contents, options = {})
@@ -8,7 +8,7 @@ class TableService::Cell
     @contents = contents
     @span     = options[:span] || 1
 
-    @style = TableService::Style.new(self, options)
+    @style = TableCloth::Style.new(self, options)
 
     @left_index = column_index
   end

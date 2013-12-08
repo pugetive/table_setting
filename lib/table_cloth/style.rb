@@ -1,4 +1,4 @@
-class TableService::Style
+class TableCloth::Style
   attr_reader :bold, :size, :background, :color
   def initialize(cell, options = {})
     @bold =       options[:bold]       || cell.row.bold?

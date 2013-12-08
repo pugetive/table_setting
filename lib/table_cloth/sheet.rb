@@ -1,10 +1,10 @@
-class TableService::Sheet
+class TableCloth::Sheet
   attr_reader :stack
   attr_accessor :name, :rows
 
   @@counter = 0
 
-  def initialize(parent_stack = TableService::Stack.new, options = {})
+  def initialize(parent_stack = TableCloth::Stack.new, options = {})
     @stack = parent_stack
     @stack.sheets.push(self)
     @rows = []
@@ -43,7 +43,7 @@ class TableService::Sheet
   end
 
   def new_row(options = {})
-    TableService::Row.new(self, options)
+    TableCloth::Row.new(self, options)
   end
   
   def to_csv

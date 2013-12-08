@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'table_service/version'
+require 'table_cloth/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "table_service"
-  spec.version       = TableService::VERSION
+  spec.name          = "table_cloth"
+  spec.version       = TableCloth::VERSION
   spec.authors       = ["Todd Gehman"]
   spec.email         = ["toddgehman@gmail.com"]
   spec.description   = %q{Facilitates a data table structure that can be trivially exported as HTML, XLS, CSV, etc while allowing human-friendly custom styles to be shared between the HTML and Excel formats.}
