@@ -1,6 +1,6 @@
 # TableService
 
-Styles shared between the HTML and Excel spreadsheets can be applied at the row level or cell level.
+Styles shared between the HTML and Excel spreadsheets can be applied to individual cells, entire rows, or (once the table is filled out) even columns. Styles are applied using automatically-definied classes rather than applying styles on a per-cell basis inline.
 
 ## Installation
 
@@ -38,6 +38,9 @@ Then export:
     sheet.to_xls
     sheet.to_csv
     
+Or maybe you want to turn the whole second column red:
+
+    sheet.style_column(2, background: '#ff6666')
 
 ## Contributing
 
