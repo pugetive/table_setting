@@ -1,6 +1,6 @@
 # TableService
 
-Styles shared between the HTML and Excel spreadsheets can be applied to individual cells, entire rows, or (once the table is filled out) even columns. Styles are applied using automatically-definied classes rather than applying styles on a per-cell basis inline.
+I couldn't find a gem that would allow an HTML preview of a styled Excel spreadsheet before exporting, so I had to roll my own.  Styles can be applied to individual cells, entire rows, or (once the table is built) even columns. To save some bandwidth, styles are applied using automatically-defined classes which are then applied to the corresponding cells.
 
 ## Installation
 
@@ -18,7 +18,7 @@ Or install it yourself as:
 
 ## Usage
 
-The following simple example creates a table which has a header featuring large white text on a dark brown background.  Once cell is set to bold text and the footer is set to span both columns.  Exporting with to_html or to_xls should achieve roughly the same formatting.
+The following simple example creates a table which has a header featuring large white text on a dark brown background.  The bottom right cell is individually set to bold text and the bottom row spans all columns.  Exporting with to_html or to_xls achieve roughly the same formatting.
 
     sheet = TableService::Sheet.new
     header = sheet.new_row(background: '#3A2212', color: '#ffffff', bold: true, size: '18px')
@@ -30,7 +30,7 @@ The following simple example creates a table which has a header featuring large 
     row.new_cell("Flintstone", bold: true)
     
     footer = sheet.new_row
-    footer.new_cell("That is all the people to list.", span: 2)
+    footer.new_cell("That is all the people to list.", span: 'all')
     
 Then export:
 
