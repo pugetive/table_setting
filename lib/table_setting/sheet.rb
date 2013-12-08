@@ -1,38 +1,32 @@
 class TableSetting::Sheet
-  attr_reader :stack
+  attr_reader :stack, :debug
   attr_accessor :name, :rows
 
   @@counter = 0
 
-  def initialize(parent_stack = TableSetting::Stack.new, options = {})
-    @stack = parent_stack
+  def initialize(parent_stack = nil, options = {})
+    @stack = parent_stack || TableSetting::Stack.new
     @stack.sheets.push(self)
     @rows = []
+    @debug = options[:debug]
 
     @@counter += 1
     @name = options[:name] || "Sheet#{@@counter}"
   end
 
   def cells
-    list = []
-    rows.each do |row|
-      list.concat(row.cells)
-    end
-    list
+    rows.map(&:cells).flatten
   end
 
   def num_columns
-    max = 0
-    rows.each do |row|
-      if row.num_columns > max
-        max = row.num_columns
-      end
-    end
-    max
+    rows.map{|row| row.num_columns}.sort.last
   end
 
   def style_column(number, options)
     rows.each do |row|
+      if options[:skip_row] and options[:skip_row] == rows.index(row) + 1
+        next
+      end
       row.fill
       row.cells.select{|c| c.in_column?(number)}.map{|c| c.set_style(options)}
     end
@@ -53,6 +47,10 @@ class TableSetting::Sheet
       end
     end
     csv_string
+  end
+
+  def index
+    @index ||= sheet.rows.index(self)
   end
 
   def to_html

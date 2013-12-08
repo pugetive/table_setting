@@ -1,5 +1,5 @@
 class TableSetting::Cell
-  attr_reader :row, :contents, :span, :style, :left_index
+  attr_reader :row, :contents, :span, :style, :left_index, :rowspan
     
   def initialize(row, contents, options = {})
     @row = row
@@ -7,11 +7,13 @@ class TableSetting::Cell
 
     @contents = contents
     @span     = options[:span] || 1
-
+    @rowspan  = options[:rowspan] || 1
+    
     @style = TableSetting::Style.new(self, options)
 
     @left_index = column_index
   end
+
 
   def set_style(options)
     style.update(options)
@@ -56,8 +58,13 @@ class TableSetting::Cell
   end
 
   def to_html
+    if sheet.debug
+      cell_index = "#{left_index} :: "
+    else
+      cell_index = ''
+    end
     <<-HTML
-      <td #{html_classes} #{span_attribute}>#{contents.blank? ? '&nbsp;' : contents}</td>
+      <td #{html_classes} #{span_attributes}>#{cell_index}#{contents.blank? ? '&nbsp;' : contents}</td>
     HTML
   end
 
@@ -88,32 +95,29 @@ class TableSetting::Cell
     %Q{<Cell #{column_attribute} ss:StyleID="#{style.name}"><Data ss:Type="String">#{contents}</Data></Cell>\n}
   end
 
-  # def left_index
-  #   preceeding_cells.map{|c| c.span}.sum
-  # end
-
   private
 
     def html_classes
-      list = []
-      if bold?
-        list << 'bold'
-      end
-      list.push(style.name)
-      unless list.empty?
-        return %Q{class="#{list.join(' ')}"}
-      end
-      ''
+        return %Q{class="#{style.name}"} unless style.name.blank?
     end
 
-    def span_attribute
-      span = 0
+    def span_attributes
+      %Q{#{rowspan_attribute} #{colspan_attribute}}.strip
+    end
+    
+    def rowspan_attribute
+      return '' unless rowspan and rowspan > 1
+      %Q{rowspan="#{rowspan}"}
+    end
+
+    def colspan_attribute
+      span = 1
       if @span == 'all'
         span = sheet.num_columns
       elsif @span
         span = @span
       end
-      if span > 0
+      if span > 1
         return %Q{colspan="#{span}"}
       end
       ''

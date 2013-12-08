@@ -22,7 +22,20 @@ class TableSetting::Row
       end
       total_width += width
     end
-    total_width
+    total_width + num_inherited_columns
+  end
+
+  def num_inherited_columns
+    spanned_columns = 0
+    sheet.rows.each do |row|
+      row.cells.each do |cell|
+        next unless cell.rowspan > 1
+        if (sheet.rows.index(row) + (cell.rowspan - 1)) >= sheet.rows.index(self)
+          spanned_columns += cell.span
+        end
+      end
+    end
+    spanned_columns
   end
 
   def bold?
