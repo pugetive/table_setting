@@ -1,6 +1,6 @@
 # TableService
 
-TODO: Write a gem description
+Styles shared between the HTML and Excel spreadsheets can be applied at the row level or cell level.
 
 ## Installation
 
@@ -18,7 +18,26 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+The following simple example creates a table which has a header featuring large white text on a dark brown background.  Once cell is set to bold text and the footer is set to span both columns.  Exporting with to_html or to_xls should achieve roughly the same formatting.
+
+    sheet = TableService::Sheet.new
+    header = sheet.new_row(background: '#3A2212', color: '#ffffff', bold: true, size: '18px')
+    header.add_cells(["First Name", "Last Name"])
+
+    sheet.new_row.add_cells(["Fred", "Flintstone"])
+    row = sheet.new_row
+    row.new_cell("Wilma")
+    row.new_cell("Flintstone", bold: true)
+    
+    footer = sheet.new_row
+    footer.new_cell("That is all the people to list.", span: 2)
+    
+Then export:
+
+    sheet.to_html
+    sheet.to_xls
+    sheet.to_csv
+    
 
 ## Contributing
 
