@@ -1,4 +1,4 @@
-class TableCloth::Row
+class TableSetting::Row
   attr_reader :sheet, :bold, :background, :color, :size
   attr_accessor :cells
   def initialize(sheet, options = {})
@@ -30,7 +30,7 @@ class TableCloth::Row
   end
 
   def new_cell(contents, options = {})
-    TableCloth::Cell.new(self, contents, options)
+    TableSetting::Cell.new(self, contents, options)
   end
 
   def add_cells(list)

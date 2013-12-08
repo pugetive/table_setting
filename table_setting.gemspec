@@ -1,15 +1,15 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'table_cloth/version'
+require 'table_setting/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "table_cloth"
-  spec.version       = TableCloth::VERSION
+  spec.name          = "table_setting"
+  spec.version       = TableSetting::VERSION
   spec.authors       = ["Todd Gehman"]
   spec.email         = ["toddgehman@gmail.com"]
-  spec.description   = %q{Facilitates a data table structure that can be trivially exported as HTML, XLS, CSV, etc while allowing human-friendly custom styles to be shared between the HTML and Excel formats.}
-  spec.summary       = %q{Data table exports with shared custom formatting.}
+  spec.description   = %q{Ruby gem to create a data table that can be easily presented as HTML or Excel with the same human-friendly display styles applied to both. Unstyled formats like CSV are supported as well.}
+  spec.summary       = %q{Data table exports with shared custom style settings.}
   spec.homepage      = ""
   spec.license       = "MIT"
 

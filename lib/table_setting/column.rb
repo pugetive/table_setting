@@ -1,4 +1,4 @@
-class TableCloth::Column
+class TableSetting::Column
   def initialize(title, method, options = {})
     @title  = title
     @method = method

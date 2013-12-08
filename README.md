@@ -1,4 +1,4 @@
-# TableCloth
+# TableSetting
 
 I couldn't find a gem that would allow an HTML preview of a styled Excel spreadsheet before exporting, so I had to roll my own.  Styles can be applied to individual cells, entire rows, or (once the table is built) even columns. To save some bandwidth, styles are applied using automatically-defined classes which are then applied to the corresponding cells.
 
@@ -6,7 +6,7 @@ I couldn't find a gem that would allow an HTML preview of a styled Excel spreads
 
 Add this line to your application's Gemfile:
 
-    gem 'table_cloth'
+    gem 'table_setting'
 
 And then execute:
 
@@ -14,13 +14,13 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install table_cloth
+    $ gem install table_setting
 
 ## Usage
 
 The following simple example creates a table which has a header featuring large white text on a dark brown background.  The bottom right cell is individually set to bold text and the bottom row spans all columns.  Exporting with to_html or to_xls achieve roughly the same formatting.
 
-    sheet = TableCloth::Sheet.new
+    sheet = TableSetting::Sheet.new
     header = sheet.new_row(background: '#3A2212', color: '#ffffff', bold: true, size: '18px')
     header.add_cells(["First Name", "Last Name"])
 

@@ -1,10 +1,10 @@
-class TableCloth::Sheet
+class TableSetting::Sheet
   attr_reader :stack
   attr_accessor :name, :rows
 
   @@counter = 0
 
-  def initialize(parent_stack = TableCloth::Stack.new, options = {})
+  def initialize(parent_stack = TableSetting::Stack.new, options = {})
     @stack = parent_stack
     @stack.sheets.push(self)
     @rows = []
@@ -43,7 +43,7 @@ class TableCloth::Sheet
   end
 
   def new_row(options = {})
-    TableCloth::Row.new(self, options)
+    TableSetting::Row.new(self, options)
   end
   
   def to_csv

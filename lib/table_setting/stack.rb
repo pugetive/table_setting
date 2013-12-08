@@ -1,4 +1,4 @@
-class TableCloth::Stack
+class TableSetting::Stack
   attr_accessor :sheets
 
   def initialize
@@ -15,7 +15,7 @@ class TableCloth::Stack
 
 
   def new_sheet(options = {})
-    TableCloth::Sheet.new(self, options)
+    TableSetting::Sheet.new(self, options)
   end
 
   def to_xls
