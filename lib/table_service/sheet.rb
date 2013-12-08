@@ -77,6 +77,7 @@ class TableService::Sheet
       .grid-sheet td {background-color: #fff;}
     CSS
     signatures.each do |signature_class, signature_css|
+      next if signature_css.empty?
       css += "\n.grid-sheet td.#{signature_class} {#{signature_css}}"
     end
     css
