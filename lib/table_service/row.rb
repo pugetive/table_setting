@@ -42,11 +42,6 @@ class TableService::Row
   end
 
   def to_html
-    if num_columns < sheet.num_columns and
-      !filled?
-      filler_columns = sheet.num_columns - num_columns
-      filler_cell = self.new_cell('', span: filler_columns).to_html
-    end
     <<-HTML
       <tr>
         #{cells.map(&:to_html).join("\n")}
@@ -59,6 +54,14 @@ class TableService::Row
       return true if cell.span == 'all'
     end
     false
+  end
+
+  def fill
+    if num_columns < sheet.num_columns and
+      !filled?
+      filler_columns = sheet.num_columns - num_columns
+      filler_cell = self.new_cell('', span: filler_columns).to_html
+    end
   end
 
   def to_xls

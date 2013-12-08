@@ -1,5 +1,5 @@
 class TableService::Cell
-  attr_reader :row, :contents, :span, :style
+  attr_reader :row, :contents, :span, :style, :left_index
     
   def initialize(row, contents, options = {})
     @row = row
@@ -9,6 +9,8 @@ class TableService::Cell
     @span     = options[:span] || 1
 
     @style = TableService::Style.new(self, options)
+
+    @left_index = column_index
   end
 
   def set_style(options)
@@ -51,14 +53,6 @@ class TableService::Cell
       end
     end
     list
-  end
-
-  def left_index
-    lefties = preceding_cells
-    if lefties.empty?
-      return 0
-    end
-    lefties.map{|c| c.span}.sum
   end
 
   def to_html
@@ -124,5 +118,14 @@ class TableService::Cell
       end
       ''
     end
+
+    def column_index
+      lefties = preceding_cells
+      if lefties.empty?
+        return 0
+      end
+      lefties.map{|c| c.span}.sum
+    end
+
 
 end

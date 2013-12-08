@@ -32,7 +32,10 @@ class TableService::Sheet
   end
 
   def style_column(number, options)
-    cells.select{|c| c.in_column?(number)}.map{|c| c.set_style(options)}
+    rows.each do |row|
+      row.fill
+      row.cells.select{|c| c.in_column?(number)}.map{|c| c.set_style(options)}
+    end
   end
 
   def spacer
