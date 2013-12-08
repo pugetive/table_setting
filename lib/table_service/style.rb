@@ -1,10 +1,17 @@
 class TableService::Style
   attr_reader :bold, :size, :background, :color
-  def initialize(cell)
-    @bold = cell.bold? || cell.row.bold?
-    @size = cell.size || cell.row.size
-    @background = cell.background || cell.row.background
-    @color = cell.color || cell.row.color
+  def initialize(cell, options)
+    @bold =       options[:bold]       || cell.row.bold?
+    @size =       options[:size]       || cell.row.size
+    @background = options[:background] || cell.row.background
+    @color =      options[:color]      || cell.row.color
+  end
+
+  def update(options)
+    @bold       = options[:bold]       if options[:bold]
+    @background = options[:background] if options[:background]
+    @color      = options[:color]      if options[:color]
+    @size       = options[:size]       if options[:size]
   end
 
   def name

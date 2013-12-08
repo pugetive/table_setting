@@ -6,14 +6,15 @@ class TableService::Cell
     @row.cells.push(self)
 
     @contents = contents
-    @bold       = options[:bold]       || nil
-    @background = options[:background] || nil
-    @color      = options[:color]      || nil
-    @size       = options[:size]       || nil
-    @span       = options[:span]       || nil
+    @span     = options[:span] || 1
 
-    @style = TableService::Style.new(self)
+    @style = TableService::Style.new(self, options)
   end
+
+  def set_style(options)
+    style.update(options)
+  end
+  
 
   def sheet
     row.sheet
@@ -33,6 +34,31 @@ class TableService::Cell
 
   def size
     @size || row.size
+  end
+
+  def in_column?(number)
+    left_index == (number - 1)
+  end
+
+  def preceding_cells
+    list = []
+    my_index = row.cells.index(self)
+    row.cells.each do |cell|
+      if row.cells.index(cell) < my_index
+        list << cell
+      else
+        break
+      end
+    end
+    list
+  end
+
+  def left_index
+    lefties = preceding_cells
+    if lefties.empty?
+      return 0
+    end
+    lefties.map{|c| c.span}.sum
   end
 
   def to_html
@@ -68,6 +94,9 @@ class TableService::Cell
     %Q{<Cell #{column_attribute} ss:StyleID="#{style.name}"><Data ss:Type="String">#{contents}</Data></Cell>\n}
   end
 
+  # def left_index
+  #   preceeding_cells.map{|c| c.span}.sum
+  # end
 
   private
 

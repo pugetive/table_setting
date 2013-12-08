@@ -31,6 +31,10 @@ class TableService::Sheet
     max
   end
 
+  def style_column(number, options)
+    cells.select{|c| c.in_column?(number)}.map{|c| c.set_style(options)}
+  end
+
   def spacer
     self.new_row.new_cell('', span: 'all')
   end
@@ -38,7 +42,7 @@ class TableService::Sheet
   def new_row(options = {})
     TableService::Row.new(self, options)
   end
-
+  
   def to_csv
     csv_string = CSV.generate do |csv|
       rows.each do |row|
