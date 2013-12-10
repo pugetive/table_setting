@@ -55,6 +55,7 @@ class TableSetting::Row
   end
 
   def to_html
+    fill
     <<-HTML
       <tr>
         #{cells.map(&:to_html).join("\n")}

@@ -1,14 +1,10 @@
 class TableSetting::Column
-  def initialize(title, method, options = {})
+  attr_reader :title, :style_options, :method_token
+
+  def initialize(title, method_token, options = {})
     @title  = title
-    @method = method
+    @method_token = method_token
+    @style_options = options
   end
 
-  def title
-    @title
-  end
-
-  def method
-    @method
-  end
 end
