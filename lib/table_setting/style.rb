@@ -5,6 +5,7 @@ class TableSetting::Style
     @size =       options[:size]       || cell.row.size
     @background = options[:background] || cell.row.background
     @color =      options[:color]      || cell.row.color
+    @name  =      options[:style_name]
   end
 
   def update(options)
@@ -15,13 +16,7 @@ class TableSetting::Style
   end
 
   def name
-    settings = {
-      bold:       bold?,
-      background: background,
-      size:       size,
-      color:      color
-    }
-    "style-#{Digest::MD5.hexdigest(settings.to_s)[0..7]}"
+    @name ||= "style-#{Digest::MD5.hexdigest(settings.to_s)[0..7]}"
   end
 
   def bold?
@@ -68,5 +63,16 @@ class TableSetting::Style
     end
 
     signature
+  end
+
+  private
+
+  def settings
+    {
+      bold:       bold?,
+      background: background,
+      size:       size,
+      color:      color
+    }
   end
 end
